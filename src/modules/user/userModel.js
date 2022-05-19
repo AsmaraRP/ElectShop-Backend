@@ -5,15 +5,17 @@ module.exports = {
     new Promise((resolve, reject) => {
       connection.query(
         `SELECT 
-      users.id,
-      users.fullName,
-      users.address, 
-      users.noTelp,
-      users.birthDay,
-      users.gender,
-      users.status,
-      users.role
-       FROM users WHERE id=?`,
+        users.id,
+        users.fullName,
+        users.address, 
+        users.noTelp,
+        users.birthDay,
+        users.gender,
+        users.email,
+        users.image,
+        users.status,
+        users.role,
+        FROM users WHERE id=?`,
         id,
         (error, result) => {
           if (!error) {
