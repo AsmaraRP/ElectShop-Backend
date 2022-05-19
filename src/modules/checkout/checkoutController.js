@@ -124,14 +124,14 @@ module.exports = {
       } = request.body;
       console.log(request.body);
 
-      //   const user = request.decodeToken;
-      //   const userId = user.id;
+      const user = request.decodeToken;
+      const userId = user.id;
 
       const statusCart = "active";
 
       const setData = {
         productId,
-        // userId,
+        userId,
         addressDelivery,
         checkoutNote,
         productTotal,
