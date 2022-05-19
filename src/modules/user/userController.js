@@ -14,14 +14,14 @@ module.exports = {
         return helperWrapper.response(
           response,
           404,
-          `Data by Id${id} not found`,
+          `Data by Id = ${id} not found`,
           null
         );
       }
       delete result[0].password;
       return helperWrapper.response(response, 200, "succes get data !", result);
     } catch (error) {
-      return helperWrapper.response(response, 400, "bad request", null);
+      return helperWrapper.response(response, 404, "Bad request", null);
     }
   },
   updateProfile: async (request, response) => {
@@ -57,7 +57,7 @@ module.exports = {
         image: request.file
           ? `${request.file.filename}.${request.file.mimetype.split("/")[1]}`
           : "",
-        updatedAt: new Date(Date.now()),
+        updated_at: new Date(Date.now()),
       };
       // eslint-disable-next-line no-restricted-syntax
       for (const data in newData) {
@@ -73,7 +73,7 @@ module.exports = {
         result
       );
     } catch (error) {
-      return helperWrapper.response(response, 400, "bad request", null);
+      return helperWrapper.response(response, 404, "Bad request", null);
     }
   },
   updatePassword: async (request, response) => {
@@ -81,6 +81,15 @@ module.exports = {
       const { id } = request.params;
       let { newPassword, confirmPassword } = request.body;
       const resultUserId = await userModel.getUserByUserId(id);
+      if (resultUserId.length <= 0) {
+        return helperWrapper.response(
+          response,
+          404,
+          `Data by Id= ${id} not found`,
+          null
+        );
+      }
+
       const resultPassword = await bcrypt.compare(
         newPassword,
         resultUserId[0].password
@@ -112,7 +121,7 @@ module.exports = {
       newPassword = await bcrypt.hash(newPassword, saltRounds);
       const newData = {
         password: newPassword,
-        updatedAt: new Date(Date.now()),
+        updated_at: new Date(Date.now()),
       };
 
       const token = request.headers.authorization;
@@ -127,7 +136,7 @@ module.exports = {
       );
     } catch (error) {
       if (error) {
-        return helperWrapper.response(response, 400, "bad request", null);
+        return helperWrapper.response(response, 404, "Bad request", null);
       }
     }
   },

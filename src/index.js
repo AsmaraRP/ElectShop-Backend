@@ -5,7 +5,7 @@ const helmet = require("helmet");
 const xss = require("xss-clean");
 const compression = require("compression");
 const bodyParser = require("body-parser");
-// const routerNavigation = require("./routes");
+const routerNavigation = require("./routes");
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 
 //----
-// app.use("/", routerNavigation);
+app.use("/", routerNavigation);
 app.use("/*", (request, response) => {
   response.status(404).send("Path not found !");
 });
