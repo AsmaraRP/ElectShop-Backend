@@ -14,7 +14,7 @@ module.exports = {
         users.email,
         users.image,
         users.status,
-        users.role,
+        users.role
         FROM users WHERE id=?`,
         id,
         (error, result) => {
@@ -28,20 +28,16 @@ module.exports = {
     }),
   updateProfile: (id, data) =>
     new Promise((resolve, reject) => {
-      connection.query(
-        "UPDATE users SET ? WHERE id = ?",
-        [data, id],
-        (error) => {
-          if (!error) {
-            const newResult = {
-              id,
-              ...data,
-            };
-            resolve(newResult);
-          } else {
-            reject(new Error(error.sqlMessage));
-          }
+      connection.query("UPDATE users SET ? WHERE id = ?", [data, id], (error) => {
+        if (!error) {
+          const newResult = {
+            id,
+            ...data,
+          };
+          resolve(newResult);
+        } else {
+          reject(new Error(error.sqlMessage));
         }
-      );
+      });
     }),
 };
