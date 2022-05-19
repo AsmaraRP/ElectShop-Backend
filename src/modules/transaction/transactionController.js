@@ -109,6 +109,31 @@ module.exports = {
       return helperWrapper.response(response, 404, "Bad request", null);
     }
   },
+  deleteTransaction: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const resultMovieId = await transactionModel.getTransactionById(id);
+
+      if (resultMovieId.length <= 0) {
+        return helperWrapper.response(
+          response,
+          404,
+          `Data by Id = ${id} not found`,
+          null
+        );
+      }
+
+      const result = await movieModel.deleteTransaction(id);
+      return helperWrapper.response(
+        response,
+        200,
+        "succes delete data !",
+        result
+      );
+    } catch (error) {
+      return helperWrapper.response(response, 404, "Bad request", null);
+    }
+  },
   postMidtransNotification: async (request, response) => {
     try {
       const result = await helperMidtrans.notif(request.body);

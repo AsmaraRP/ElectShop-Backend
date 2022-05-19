@@ -24,5 +24,6 @@ Router.post(
   "/midtrans-notification",
   transactionController.postMidtransNotification
 );
+Router.delete("/delete/:id", transactionController.deleteTransaction);
 
 module.exports = Router;

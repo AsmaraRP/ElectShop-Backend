@@ -88,4 +88,14 @@ module.exports = {
         }
       );
     }),
+  deleteTransaction: (id) =>
+    new Promise((resolve, reject) => {
+      connection.query("DELETE FROM transaction WHERE id=?", id, (error) => {
+        if (!error) {
+          resolve(id);
+        } else {
+          reject(new Error(error.sqlMessage));
+        }
+      });
+    }),
 };
