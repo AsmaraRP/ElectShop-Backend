@@ -1,7 +1,5 @@
 const { createClient } = require("redis");
-const dotenv = require("dotenv");
 
-dotenv.config();
 const client = createClient({
   // host: "127.0.0.1",
   // port: 6379,
@@ -12,6 +10,7 @@ const client = createClient({
 (async () => {
   client.connect();
   client.on("connect", () => {
+    // eslint-disable-next-line no-console
     console.log("You're now connected db redis ...");
   });
 })();

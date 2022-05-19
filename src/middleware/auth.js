@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const helperWrapper = require("../helper/wrapper");
+const helperWrapper = require("../helpers/wrapper");
 const redis = require("../config/redis");
 
 module.exports = {

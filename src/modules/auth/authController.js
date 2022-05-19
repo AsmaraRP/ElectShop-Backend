@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
-const helperWrapper = require("../../helper/wrapper");
-const { sendMail } = require("../../helper/mail");
+const helperWrapper = require("../../helpers/wrapper");
+const { sendMail } = require("../../helpers/mail");
 const authModel = require("./authModel");
 const redis = require("../../config/redis");
 

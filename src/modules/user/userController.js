@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const helperWrapper = require("../../helper/wrapper");
+const helperWrapper = require("../../helpers/wrapper");
 const userModel = require("./userModel");
 const cloudinary = require("../../config/cloudinary");
 const redis = require("../../config/redis");
@@ -128,6 +128,8 @@ module.exports = {
       redis.setEx(`accessToken:${token}`, 3600 * 24, token);
 
       const result = await userModel.updateProfile(id, newData);
+
+      delete result.password;
       return helperWrapper.response(
         response,
         200,
@@ -136,6 +138,7 @@ module.exports = {
       );
     } catch (error) {
       if (error) {
+        console.log(error);
         return helperWrapper.response(response, 404, "Bad request", null);
       }
     }
