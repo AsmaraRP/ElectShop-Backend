@@ -1,6 +1,9 @@
 const express = require("express");
 
 const Router = express.Router();
+const userRoutes = require("../modules/user/userRoutes");
+
+Router.use("/user", userRoutes);
 
 const productRoutes = require("../modules/product/productRoutes");
 // const scheduleRoutes = require("../modules/schedule/schedulesRoutes")
