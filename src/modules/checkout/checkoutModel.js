@@ -25,9 +25,13 @@ module.exports = {
   ) =>
     new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM product INNER JOIN checkout ON checkout.productId = product.id WHERE 
-        checkout.productId = '${searchProductId}' AND checkout.userId LIKE '%${searchUserId}%' 
-        AND checkout.rating = '${rating}' AND checkout.statusCart LIKE '%${statusCart}%' LIMIT ${limit} OFFSET ${offset};`,
+        `SELECT * FROM checkout INNER JOIN product ON product.id = checkout.productId WHERE 
+        checkout.productId LIKE '%${searchProductId}%' ${
+          searchUserId === null
+            ? "AND"
+            : `AND checkout.userId LIKE '%${searchUserId}%' AND`
+        }  
+        checkout.rating LIKE '%${rating}%' AND checkout.statusCart LIKE '%${statusCart}%' LIMIT ${limit} OFFSET ${offset};`,
         (error, result) => {
           if (!error) {
             resolve(result);

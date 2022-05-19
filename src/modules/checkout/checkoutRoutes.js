@@ -8,7 +8,7 @@ const middlewareRedis = require("../../middleware/redis");
 
 Router.get(
   "/",
-  middlewareRedis.getCheckoutRedis,
+  // middlewareRedis.getCheckoutRedis,
   checkoutController.getAllCheckout
 );
 Router.get(
@@ -25,7 +25,6 @@ Router.patch(
 Router.delete(
   "/:id",
   middlewareRedis.clearCheckoutRedis,
-  //  middlewareAuth.isAdmin,
   checkoutController.deleteCheckout
 );
 

@@ -17,9 +17,9 @@ module.exports = {
         isNaN(searchProductId) || searchProductId === 0
           ? (searchProductId = "")
           : (searchProductId = Number(searchProductId));
-      typeof searchUserId === "string"
+      searchUserId !== "" && typeof searchUserId === "string"
         ? (searchUserId = searchUserId)
-        : (searchUserId = "");
+        : (searchUserId = null);
       rating =
         isNaN(rating) || rating === 0
           ? (rating = "")
@@ -50,12 +50,13 @@ module.exports = {
         limit,
         offset
       );
+      console.log(searchProductId);
 
-      redis.setEx(
-        `getCheckout:${JSON.stringify(request.query)}`,
-        3600,
-        JSON.stringify({ result, pageInfo })
-      );
+      //   redis.setEx(
+      //     `getCheckout:${JSON.stringify(request.query)}`,
+      //     3600,
+      //     JSON.stringify({ result, pageInfo })
+      //   );
 
       if (result.length <= 0) {
         return helperWrapper.response(
@@ -63,8 +64,8 @@ module.exports = {
           404,
           `${
             searchProductId
-              ? `Search product by id ${searchProductId} is not found`
-              : "Search product is not found"
+              ? `Search checkout by product id ${searchProductId} is not found`
+              : "Search checkout is not found"
           }`,
           null
         );
@@ -154,17 +155,23 @@ module.exports = {
   updateCheckout: async (request, response) => {
     try {
       const { id } = request.params;
-      const { movieId, premiere, price, location, dateStart, dateEnd, time } =
-        request.body;
+      const {
+        addressDelivery,
+        checkoutNote,
+        productTotal,
+        review,
+        rating,
+        statusCart,
+      } = request.body;
+      console.log(request.body);
       const setData = {
-        movieId,
-        premiere,
-        price,
-        location,
-        dateStart,
-        dateEnd,
-        time,
-        updateAt: new Date(Date.now()),
+        addressDelivery,
+        checkoutNote,
+        productTotal,
+        review,
+        rating,
+        statusCart,
+        update_at: new Date(Date.now()),
       };
 
       // eslint-disable-next-line no-restricted-syntax
