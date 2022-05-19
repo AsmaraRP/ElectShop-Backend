@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 const port = 3001;
-// const port = process.env.PORT;
+
 // midleware
 app.use(morgan("dev"));
 app.use(cors());
@@ -22,13 +22,18 @@ app.use(xss());
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static("public"));
 
-//----
+// ---
 app.use("/", routerNavigation);
+
 app.use("/*", (request, response) => {
   response.status(404).send("Path not found !");
 });
+
+// app.get("/hello", (request, response) => {
+//   response.status(200);
+//   response.send("Hello World");
+// });
 
 app.listen(port, () => {
   console.log(`Express app is listen on port ${port} !`);

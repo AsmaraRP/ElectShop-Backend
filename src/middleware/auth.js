@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const helperWrapper = require("../helper/wrapper");
+const helperWrapper = require("../helpers/wrapper");
 const redis = require("../config/redis");
 
 module.exports = {
@@ -11,7 +11,11 @@ module.exports = {
     token = token.split(" ")[1];
     const checkRedis = await redis.get(`accessToken:${token}`);
     if (checkRedis) {
-      return helperWrapper.response(response, 403, "Your Token is destroyed, please login again");
+      return helperWrapper.response(
+        response,
+        403,
+        "Your Token is destroyed, please login again"
+      );
     }
     jwt.verify(token, "RAHASIA", (error, result) => {
       if (error) {
@@ -29,7 +33,12 @@ module.exports = {
         return helperWrapper.response(response, 400, error.massage, null);
       }
       if (result.role !== "admin") {
-        return helperWrapper.response(response, 403, "only admins are allowed to access", null);
+        return helperWrapper.response(
+          response,
+          403,
+          "only admins are allowed to access",
+          null
+        );
       }
       request.decodeToken = result;
       next();

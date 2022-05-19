@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const helperWrapper = require("../../helper/wrapper");
+const helperWrapper = require("../../helpers/wrapper");
 const userModel = require("./userModel");
 const cloudinary = require("../../config/cloudinary");
 const redis = require("../../config/redis");
@@ -11,7 +11,12 @@ module.exports = {
       const result = await userModel.getUserByUserId(id);
 
       if (result.length <= 0) {
-        return helperWrapper.response(response, 404, `Data by Id${id} not found`, null);
+        return helperWrapper.response(
+          response,
+          404,
+          `Data by Id${id} not found`,
+          null
+        );
       }
       delete result[0].password;
       return helperWrapper.response(response, 200, "succes get data !", result);
@@ -27,14 +32,22 @@ module.exports = {
       const resultUserId = await userModel.getUserByUserId(id);
 
       if (resultUserId.length <= 0) {
-        return helperWrapper.response(response, 404, `Data by Id= ${id} not found`, null);
+        return helperWrapper.response(
+          response,
+          404,
+          `Data by Id= ${id} not found`,
+          null
+        );
       }
       if (resultUserId[0].image && request.file) {
-        cloudinary.uploader.destroy(`${resultUserId[0].image.split(".")[0]}`, (error) => {
-          if (error) {
-            return helperWrapper.response(response, 404, error.message, null);
+        cloudinary.uploader.destroy(
+          `${resultUserId[0].image.split(".")[0]}`,
+          (error) => {
+            if (error) {
+              return helperWrapper.response(response, 404, error.message, null);
+            }
           }
-        });
+        );
       }
       const newData = {
         fullName,
@@ -42,7 +55,9 @@ module.exports = {
         noTelp,
         birthDay,
         gender,
-        image: request.file ? `${request.file.filename}.${request.file.mimetype.split("/")[1]}` : "",
+        image: request.file
+          ? `${request.file.filename}.${request.file.mimetype.split("/")[1]}`
+          : "",
         updatedAt: new Date(Date.now()),
       };
       // eslint-disable-next-line no-restricted-syntax
@@ -52,7 +67,12 @@ module.exports = {
         }
       }
       const result = await userModel.updateProfile(id, newData);
-      return helperWrapper.response(response, 200, "succes update data !", result);
+      return helperWrapper.response(
+        response,
+        200,
+        "succes update data !",
+        result
+      );
     } catch (error) {
       return helperWrapper.response(response, 400, "bad request", null);
     }
@@ -62,7 +82,10 @@ module.exports = {
       const { id } = request.params;
       let { newPassword, confirmPassword } = request.body;
       const resultUserId = await userModel.getUserByUserId(id);
-      const resultPassword = await bcrypt.compare(newPassword, resultUserId[0].password);
+      const resultPassword = await bcrypt.compare(
+        newPassword,
+        resultUserId[0].password
+      );
       let error = null;
       // eslint-disable-next-line no-unused-expressions
       !newPassword
@@ -79,7 +102,12 @@ module.exports = {
         return helperWrapper.response(response, 404, error, null);
       }
       if (resultUserId.length <= 0) {
-        return helperWrapper.response(response, 404, `Data by Id${id} not found`, null);
+        return helperWrapper.response(
+          response,
+          404,
+          `Data by Id${id} not found`,
+          null
+        );
       }
       const saltRounds = 12;
       newPassword = await bcrypt.hash(newPassword, saltRounds);
@@ -92,7 +120,12 @@ module.exports = {
       redis.setEx(`accessToken:${token}`, 3600 * 24, token);
 
       const result = await userModel.updateProfile(id, newData);
-      return helperWrapper.response(response, 200, "succes update data !, You're log out now", result);
+      return helperWrapper.response(
+        response,
+        200,
+        "succes update data !, You're log out now",
+        result
+      );
     } catch (error) {
       if (error) {
         return helperWrapper.response(response, 400, "bad request", null);
