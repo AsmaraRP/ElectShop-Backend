@@ -8,11 +8,7 @@ const middlewareUpload = require("../../middleware/uploadProduct");
 const middlewareRedis = require("../../middleware/redis");
 
 Router.get("/", productController.getAllProduct);
-Router.get(
-  "/:id",
-  middlewareRedis.getProductByIdRedis,
-  productController.getProductById
-);
+Router.get("/:id", middlewareRedis.getProductByIdRedis, productController.getProductById);
 Router.post(
   "/",
   middlewareRedis.clearProductRedis,
