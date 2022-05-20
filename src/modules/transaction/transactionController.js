@@ -8,7 +8,7 @@ module.exports = {
     try {
       const data = request.body;
       const dataCreate = {
-        id: uuidv4(),
+        // id: uuidv4(),
         ...data,
         statusPayment: "Yet Paid",
       };

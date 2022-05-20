@@ -3,16 +3,21 @@ const connection = require("../../config/mysql");
 module.exports = {
   createTransaction: (data) =>
     new Promise((resolve, reject) => {
-      connection.query("INSERT INTO transaction SET ?", data, (error) => {
-        if (!error) {
-          const newResult = {
-            ...data,
-          };
-          resolve(newResult);
-        } else {
-          reject(new Error(error.sqlMessage));
+      connection.query(
+        "INSERT INTO transaction SET ?",
+        data,
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              id: result.insertId,
+              ...data,
+            };
+            resolve(newResult);
+          } else {
+            reject(new Error(error.sqlMessage));
+          }
         }
-      });
+      );
     }),
   getTransactionById: (id) =>
     new Promise((resolve, reject) => {
