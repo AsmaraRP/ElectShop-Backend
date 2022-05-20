@@ -12,6 +12,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
+//port env
 
 // midleware
 app.use(morgan("dev"));
