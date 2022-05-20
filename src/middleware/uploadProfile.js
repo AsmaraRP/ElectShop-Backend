@@ -6,7 +6,7 @@ const helperWrapper = require("../helpers/wrapper");
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: "elecshop/imageProfile",
+    folder: "profile",
   },
 });
 const maxSize = 1048576;

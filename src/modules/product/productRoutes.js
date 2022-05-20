@@ -3,7 +3,7 @@ const express = require("express");
 const Router = express.Router();
 
 const productController = require("./productController");
-// const middlewareAuth = require("../../middleware/auth");
+const middlewareAuth = require("../../middleware/auth");
 const middlewareUpload = require("../../middleware/uploadProduct");
 const middlewareRedis = require("../../middleware/redis");
 
@@ -12,13 +12,13 @@ Router.get("/:id", middlewareRedis.getProductByIdRedis, productController.getPro
 Router.post(
   "/",
   middlewareRedis.clearProductRedis,
-  //   middlewareAuth.isAdmin,
+  middlewareAuth.isAdmin,
   middlewareUpload,
   productController.createProduct
 );
 Router.patch(
   "/:id",
-  //   middlewareAuth.isAdmin,
+  middlewareAuth.isAdmin,
   middlewareUpload,
   middlewareRedis.clearProductRedis,
   productController.updateProduct
@@ -26,7 +26,7 @@ Router.patch(
 Router.delete(
   "/:id",
   middlewareRedis.clearProductRedis,
-  //   middlewareAuth.isAdmin,
+  middlewareAuth.isAdmin,
   productController.deleteProduct
 );
 

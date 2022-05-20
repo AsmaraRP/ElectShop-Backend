@@ -11,7 +11,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT;
+//port env
 
 // midleware
 app.use(morgan("dev"));
@@ -23,9 +24,8 @@ app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// ---
+//----
 app.use("/", routerNavigation);
-
 app.use("/*", (request, response) => {
   response.status(404).send("Path not found !");
 });
