@@ -8,6 +8,6 @@ const middlewareProfile = require("../../middleware/uploadProfile");
 
 Router.get("/:id", userController.getUserByUserId);
 Router.patch("/profile/:id", middlewareProfile, userController.updateProfile);
-Router.patch("/password/:id", userController.updatePassword);
+// Router.patch("/password/:id", userController.updatePassword);
 
 module.exports = Router;

@@ -27,7 +27,8 @@ module.exports = {
   updateProfile: async (request, response) => {
     try {
       const { id } = request.params;
-      const { fullName, address, noTelp, birthDay, gender } = request.body;
+      let { fullName, address, noTelp, birthDay, gender, password } =
+        request.body;
       const resultUserId = await userModel.getUserByUserId(id);
 
       if (resultUserId.length <= 0) {
@@ -48,6 +49,23 @@ module.exports = {
           }
         );
       }
+      if (password) {
+        const resultPassword = await bcrypt.compare(
+          password,
+          resultUserId[0].password
+        );
+        if (resultPassword) {
+          return helperWrapper.response(
+            response,
+            404,
+            `password must be different`,
+            null
+          );
+        }
+        const saltRounds = 12;
+        password = await bcrypt.hash(password, saltRounds);
+      }
+
       const newData = {
         fullName,
         address,
@@ -57,6 +75,7 @@ module.exports = {
         image: request.file
           ? `${request.file.filename}.${request.file.mimetype.split("/")[1]}`
           : "",
+        password,
         updated_at: new Date(Date.now()),
       };
       // eslint-disable-next-line no-restricted-syntax
@@ -65,7 +84,10 @@ module.exports = {
           delete newData[data];
         }
       }
+
       const result = await userModel.updateProfile(id, newData);
+
+      delete result.password;
       return helperWrapper.response(
         response,
         200,
@@ -74,73 +96,6 @@ module.exports = {
       );
     } catch (error) {
       return helperWrapper.response(response, 404, "Bad request", null);
-    }
-  },
-  updatePassword: async (request, response) => {
-    try {
-      const { id } = request.params;
-      let { newPassword, confirmPassword } = request.body;
-      const resultUserId = await userModel.getUserByUserId(id);
-      if (resultUserId.length <= 0) {
-        return helperWrapper.response(
-          response,
-          404,
-          `Data by Id= ${id} not found`,
-          null
-        );
-      }
-
-      const resultPassword = await bcrypt.compare(
-        newPassword,
-        resultUserId[0].password
-      );
-      let error = null;
-      // eslint-disable-next-line no-unused-expressions
-      !newPassword
-        ? (error = `fill newPassword`)
-        : newPassword !== confirmPassword
-        ? (error = `newPassword and confirmPassword must match`)
-        : resultUserId.length <= 0
-        ? (error = `Data by Id${id} not found`)
-        : resultPassword
-        ? (error = `password must be different`)
-        : null;
-
-      if (error) {
-        return helperWrapper.response(response, 404, error, null);
-      }
-      if (resultUserId.length <= 0) {
-        return helperWrapper.response(
-          response,
-          404,
-          `Data by Id${id} not found`,
-          null
-        );
-      }
-      const saltRounds = 12;
-      newPassword = await bcrypt.hash(newPassword, saltRounds);
-      const newData = {
-        password: newPassword,
-        updated_at: new Date(Date.now()),
-      };
-
-      const token = request.headers.authorization;
-      redis.setEx(`accessToken:${token}`, 3600 * 24, token);
-
-      const result = await userModel.updateProfile(id, newData);
-
-      delete result.password;
-      return helperWrapper.response(
-        response,
-        200,
-        "succes update data !, You're log out now",
-        result
-      );
-    } catch (error) {
-      if (error) {
-        console.log(error);
-        return helperWrapper.response(response, 404, "Bad request", null);
-      }
     }
   },
 };
