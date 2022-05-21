@@ -5,7 +5,9 @@ module.exports = {
     new Promise((resolve, reject) => {
       connection.query(
         `SELECT COUNT (*) AS total FROM checkout WHERE productId LIKE '%${searchProductId}%' 
-        AND userId LIKE '%${searchUserId}%'`,
+        ${
+          searchUserId === null ? "" : `AND userId LIKE '%${searchUserId}%'`
+        }  `,
         (error, result) => {
           if (!error) {
             resolve(result[0].total);
