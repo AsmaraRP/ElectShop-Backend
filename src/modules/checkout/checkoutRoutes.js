@@ -8,14 +8,14 @@ const middlewareRedis = require("../../middleware/redis");
 
 Router.get(
   "/",
-  // middlewareAuth.authentication,
-  // middlewareRedis.getCheckoutRedis,
+  middlewareAuth.authentication,
+  middlewareRedis.getCheckoutRedis,
   checkoutController.getAllCheckout
 );
 Router.get(
   "/:id",
   middlewareAuth.authentication,
-  // middlewareRedis.getCheckoutByIdRedis,
+  middlewareRedis.getCheckoutByIdRedis,
   checkoutController.getCheckoutById
 );
 Router.post(
