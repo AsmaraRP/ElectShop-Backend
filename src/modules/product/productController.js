@@ -13,9 +13,9 @@ module.exports = {
     try {
       let { page, limit, searchType, searchName, sort } = request.query;
       // default value
-      page = isNaN(page) || page === 0 ? (page = 1) : (page = Number(page));
+      page = isNaN(page) || page === "" ? (page = 1) : (page = Number(page));
       limit =
-        isNaN(limit) || limit === 0 ? (limit = 12) : (limit = Number(limit));
+        isNaN(limit) || limit === "" ? (limit = 12) : (limit = Number(limit));
 
       typeof searchType === "string"
         ? (searchType = searchType)
