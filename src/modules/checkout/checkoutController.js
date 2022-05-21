@@ -121,13 +121,12 @@ module.exports = {
         productTotal,
         review,
         rating,
+        statusCart
       } = request.body;
       console.log(request.body);
 
       const user = request.decodeToken;
       const userId = user.id;
-
-      const statusCart = "active";
 
       const setData = {
         productId,
