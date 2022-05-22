@@ -121,7 +121,6 @@ module.exports = {
         productTotal,
         review,
         rating,
-        statusCart,
       } = request.body;
       console.log(request.body);
 
@@ -137,7 +136,6 @@ module.exports = {
         productTotal,
         review,
         rating,
-        statusCart,
         created_at: new Date(Date.now()),
       };
       const resultCheckout =
