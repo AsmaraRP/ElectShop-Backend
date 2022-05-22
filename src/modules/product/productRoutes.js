@@ -8,9 +8,14 @@ const middlewareUpload = require("../../middleware/uploadProduct");
 const middlewareRedis = require("../../middleware/redis");
 
 Router.get("/", productController.getAllProduct);
-Router.get("/:id", middlewareRedis.getProductByIdRedis, productController.getProductById);
+Router.get(
+  "/:id",
+  middlewareRedis.getProductByIdRedis,
+  productController.getProductById
+);
 Router.post(
   "/",
+  middlewareAuth.authentication,
   middlewareRedis.clearProductRedis,
   middlewareAuth.isAdmin,
   middlewareUpload,
@@ -18,6 +23,7 @@ Router.post(
 );
 Router.patch(
   "/:id",
+  middlewareAuth.authentication,
   middlewareAuth.isAdmin,
   middlewareUpload,
   middlewareRedis.clearProductRedis,
@@ -25,6 +31,7 @@ Router.patch(
 );
 Router.delete(
   "/:id",
+  middlewareAuth.authentication,
   middlewareRedis.clearProductRedis,
   middlewareAuth.isAdmin,
   productController.deleteProduct
