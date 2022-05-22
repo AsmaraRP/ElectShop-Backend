@@ -88,6 +88,7 @@ module.exports = {
         result.map(async (data, index) => {
           const id = data.checkoutId.split(",")[0];
           let address = await transactionModel.getAddressByCheckoutId(id);
+          console.log(address);
           address = address[0].addressDelivery;
           let addressLength = address.split(" ").length;
           return {
