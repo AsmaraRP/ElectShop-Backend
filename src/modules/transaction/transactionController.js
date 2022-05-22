@@ -154,7 +154,7 @@ module.exports = {
           const setData = {
             paymentMethod: paymentType,
             statusPayment: "PENDING",
-            updatedAt: new Date(Date.now()),
+            update_at: new Date(Date.now()),
           };
           const resultUpdate = await transactionModel.updateStatusTransaction(
             orderId,
@@ -171,7 +171,7 @@ module.exports = {
           const setData = {
             paymentMethod: paymentType,
             statusPayment: "SUCCESS",
-            updatedAt: new Date(Date.now()),
+            update_at: new Date(Date.now()),
           };
           const resultUpdate = await transactionModel.updateStatusTransaction(
             orderId,
@@ -188,7 +188,7 @@ module.exports = {
         const setData = {
           paymentMethod: paymentType,
           statusPayment: "SUCCESS",
-          updatedAt: new Date(Date.now()),
+          update_at: new Date(Date.now()),
         };
         const resultUpdate = await transactionModel.updateStatusTransaction(
           orderId,
@@ -204,7 +204,7 @@ module.exports = {
         const setData = {
           paymentMethod: paymentType,
           statusPayment: "FAILED",
-          updatedAt: new Date(Date.now()),
+          update_at: new Date(Date.now()),
         };
         const resultUpdate = await transactionModel.updateStatusTransaction(
           orderId,
@@ -223,7 +223,7 @@ module.exports = {
         const setData = {
           paymentMethod: paymentType,
           statusPayment: "FAILED",
-          updatedAt: new Date(Date.now()),
+          update_at: new Date(Date.now()),
         };
         const resultUpdate = await transactionModel.updateStatusTransaction(
           orderId,
@@ -239,7 +239,7 @@ module.exports = {
         const setData = {
           paymentMethod: paymentType,
           statusPayment: "PENDING",
-          updatedAt: new Date(Date.now()),
+          update_at: new Date(Date.now()),
         };
         const resultUpdate = await transactionModel.updateStatusTransaction(
           orderId,
