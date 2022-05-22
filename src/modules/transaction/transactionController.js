@@ -88,7 +88,14 @@ module.exports = {
         result.map(async (data, index) => {
           const id = data.checkoutId.split(",")[0];
           let address = await transactionModel.getAddressByCheckoutId(id);
-          console.log(address);
+          if (address.length <= 0) {
+            return helperWrapper.response(
+              response,
+              404,
+              `Address by checkoutId = ${id} not found`,
+              null
+            );
+          }
           address = address[0].addressDelivery;
           let addressLength = address.split(" ").length;
           return {
