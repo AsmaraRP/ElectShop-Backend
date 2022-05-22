@@ -57,6 +57,20 @@ module.exports = {
         }
       );
     }),
+  getCheckoutByProductIdAndUserId: (productId, userId) =>
+    new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM checkout WHERE productId = ? AND userId=?",
+        [productId, userId],
+        (error, result) => {
+          if (!error) {
+            resolve(result);
+          } else {
+            reject(new Error(error.sqlMessage));
+          }
+        }
+      );
+    }),
   createCheckout: (data) =>
     new Promise((resolve, reject) => {
       const query = connection.query(

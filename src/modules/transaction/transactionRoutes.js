@@ -12,6 +12,7 @@ Router.post(
 );
 Router.patch(
   "/delivery/:id",
+  middlewareAuth.authentication,
   middlewareAuth.isAdmin,
   transactionController.updateStatusTansaction
 );

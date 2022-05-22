@@ -114,19 +114,20 @@ module.exports = {
   },
   createCheckout: async (request, response) => {
     try {
-      const {
+      let {
         productId,
         addressDelivery,
         checkoutNote,
         productTotal,
         review,
         rating,
-        statusCart
+        statusCart,
       } = request.body;
       console.log(request.body);
 
       const user = request.decodeToken;
       const userId = user.id;
+      productTotal = productTotal || 1;
 
       const setData = {
         productId,
@@ -139,11 +140,33 @@ module.exports = {
         statusCart,
         created_at: new Date(Date.now()),
       };
-      const result = await checkoutModel.createCheckout(setData);
+      const resultCheckout =
+        await checkoutModel.getCheckoutByProductIdAndUserId(productId, userId);
+      if (resultCheckout.length <= 0) {
+        const result = await checkoutModel.createCheckout(setData);
+        return helperWrapper.response(
+          response,
+          200,
+          "Success create data !",
+          result
+        );
+      }
+      setData.productTotal = Number(setData.productTotal);
+      resultCheckout[0].productTotal = Number(resultCheckout[0].productTotal);
+      setData.productTotal += resultCheckout[0].productTotal;
+      for (const data in setData) {
+        if (!setData[data]) {
+          delete setData[data];
+        }
+      }
+      const result = await checkoutModel.updateCheckout(
+        resultCheckout[0].id,
+        setData
+      );
       return helperWrapper.response(
         response,
         200,
-        "Success create data !",
+        "Success update data !",
         result
       );
     } catch (error) {

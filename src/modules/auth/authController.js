@@ -37,7 +37,8 @@ module.exports = {
         subject: "Email verification",
         name: fullName,
         template: "verificationEmail.html",
-        bottonUrl: token,
+        token: token,
+        linkFrontEnd: process.env.LINK_FRONT_END,
       };
 
       await sendMail(setSendEmail);
