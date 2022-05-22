@@ -88,7 +88,7 @@ module.exports = {
         result.map(async (data, index) => {
           const id = data.checkoutId.split(",")[0];
           let address = await transactionModel.getAddressByCheckoutId(id);
-          if (address.length >= 0) {
+          if (address.length > 0) {
             address = address[0].addressDelivery;
             let addressLength = address.split(" ").length;
             address = address.split(" ")[addressLength - 1];
