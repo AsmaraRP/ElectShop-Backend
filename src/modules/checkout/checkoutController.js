@@ -9,12 +9,12 @@ module.exports = {
       let { searchProductId, searchUserId, rating, statusCart, limit, page } =
         request.query;
       // default value
-      page = isNaN(page) || page == 0 ? (page = 1) : (page = Number(page));
+      page = isNaN(page) || page == "" ? (page = 1) : (page = Number(page));
       limit =
-        isNaN(limit) || limit == 0 ? (limit = 10) : (limit = Number(limit));
+        isNaN(limit) || limit == "" ? (limit = 10) : (limit = Number(limit));
 
       searchProductId =
-        isNaN(searchProductId) || searchProductId === 0
+        isNaN(searchProductId) || searchProductId === ""
           ? (searchProductId = "")
           : (searchProductId = Number(searchProductId));
       searchUserId !== "" && typeof searchUserId === "string"
@@ -31,7 +31,9 @@ module.exports = {
       const offset = page * limit - limit;
       const totalData = await checkoutModel.getCountCheckout(
         searchProductId,
-        searchUserId
+        searchUserId,
+        rating,
+        statusCart
       );
       const totalPage = Math.ceil(totalData / limit);
 
@@ -52,11 +54,11 @@ module.exports = {
       );
       console.log(searchProductId);
 
-      //   redis.setEx(
-      //     `getCheckout:${JSON.stringify(request.query)}`,
-      //     3600,
-      //     JSON.stringify({ result, pageInfo })
-      //   );
+      // redis.setEx(
+      //   `getCheckout:${JSON.stringify(request.query)}`,
+      //   3600,
+      //   JSON.stringify({ result, pageInfo })
+      // );
 
       if (result.length <= 0) {
         return helperWrapper.response(
@@ -136,6 +138,7 @@ module.exports = {
         productTotal,
         review,
         rating,
+        statusCart: "active",
         created_at: new Date(Date.now()),
       };
       const resultCheckout =
