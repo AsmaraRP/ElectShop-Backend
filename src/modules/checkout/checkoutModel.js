@@ -15,7 +15,7 @@ module.exports = {
              : `AND checkout.userId LIKE '%${searchUserId}%' AND`
          }
          ${rating !== null ? "" : `checkout.rating LIKE '%${rating}%' AND`}    
-        checkout.statusCart LIKE '%${statusCart}%';`,
+        checkout.statusCart LIKE '${statusCart}';`,
         (error, result) => {
           if (!error) {
             resolve(result[0].total);
@@ -46,7 +46,7 @@ module.exports = {
              : `AND checkout.userId LIKE '%${searchUserId}%' AND`
          }
          ${rating !== null ? "" : `checkout.rating LIKE '%${rating}%' AND`}  
-        checkout.statusCart LIKE '%${statusCart}%' LIMIT ${limit} OFFSET ${offset};`,
+        checkout.statusCart LIKE '${statusCart}' LIMIT ${limit} OFFSET ${offset};`,
         (error, result) => {
           if (!error) {
             resolve(result);
@@ -73,7 +73,7 @@ module.exports = {
   getCheckoutByProductIdAndUserId: (productId, userId) =>
     new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM checkout WHERE productId = ? AND userId=?",
+        "SELECT * FROM checkout WHERE productId = ? AND userId=? AND statusCart = active",
         [productId, userId],
         (error, result) => {
           if (!error) {

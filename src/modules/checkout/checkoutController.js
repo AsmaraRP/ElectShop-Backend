@@ -26,7 +26,7 @@ module.exports = {
           : (rating = Number(rating));
       typeof statusCart === "string"
         ? (statusCart = statusCart)
-        : (statusCart = "active");
+        : (statusCart = "%%");
 
       const offset = page * limit - limit;
       const totalData = await checkoutModel.getCountCheckout(
