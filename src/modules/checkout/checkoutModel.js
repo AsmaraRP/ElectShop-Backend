@@ -1,13 +1,21 @@
 const connection = require("../../config/mysql");
 
 module.exports = {
-  getCountCheckout: (searchProductId, searchUserId) =>
+  getCountCheckout: (searchProductId, searchUserId, rating, statusCart) =>
     new Promise((resolve, reject) => {
       connection.query(
-        `SELECT COUNT (*) AS total FROM checkout WHERE productId LIKE '%${searchProductId}%' 
-        ${
-          searchUserId === null ? "" : `AND userId LIKE '%${searchUserId}%'`
-        }  `,
+        `SELECT COUNT (*) AS total FROM product INNER JOIN checkout ON checkout.productId = product.id WHERE ${
+          searchProductId === ""
+            ? `product.id LIKE '%%'`
+            : `product.id = '${searchProductId}'`
+        }
+         ${
+           searchUserId === null
+             ? "AND"
+             : `AND checkout.userId LIKE '%${searchUserId}%' AND`
+         }
+         ${rating !== null ? "" : `checkout.rating LIKE '%${rating}%' AND`}    
+        checkout.statusCart LIKE '%${statusCart}%';`,
         (error, result) => {
           if (!error) {
             resolve(result[0].total);
@@ -27,13 +35,18 @@ module.exports = {
   ) =>
     new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM checkout INNER JOIN product ON product.id = checkout.productId WHERE 
-        checkout.productId LIKE '%${searchProductId}%' ${
-          searchUserId === null
-            ? "AND"
-            : `AND checkout.userId LIKE '%${searchUserId}%' AND`
-        }  
-        checkout.rating LIKE '%${rating}%' AND checkout.statusCart LIKE '%${statusCart}%' LIMIT ${limit} OFFSET ${offset};`,
+        `SELECT * FROM product INNER JOIN checkout ON checkout.productId = product.id WHERE ${
+          searchProductId === ""
+            ? `product.id LIKE '%%'`
+            : `product.id = '${searchProductId}'`
+        }
+         ${
+           searchUserId === null
+             ? "AND"
+             : `AND checkout.userId LIKE '%${searchUserId}%' AND`
+         }
+         ${rating !== null ? "" : `checkout.rating LIKE '%${rating}%' AND`}  
+        checkout.statusCart LIKE '%${statusCart}%' LIMIT ${limit} OFFSET ${offset};`,
         (error, result) => {
           if (!error) {
             resolve(result);
