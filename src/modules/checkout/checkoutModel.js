@@ -73,7 +73,7 @@ module.exports = {
   getCheckoutByProductIdAndUserId: (productId, userId) =>
     new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM checkout WHERE productId = ? AND userId=? AND statusCart = active",
+        "SELECT * FROM checkout WHERE productId = ? AND userId=? AND statusCart ='active'",
         [productId, userId],
         (error, result) => {
           if (!error) {
