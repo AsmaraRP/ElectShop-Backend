@@ -15,7 +15,7 @@ module.exports = {
              : `AND checkout.userId LIKE '%${searchUserId}%' AND`
          }
          ${rating !== null ? "" : `checkout.rating LIKE '%${rating}%' AND`}    
-        checkout.statusCart LIKE '%${statusCart}%';`,
+        checkout.statusCart LIKE '${statusCart}';`,
         (error, result) => {
           if (!error) {
             resolve(result[0].total);
@@ -46,7 +46,7 @@ module.exports = {
              : `AND checkout.userId LIKE '%${searchUserId}%' AND`
          }
          ${rating !== null ? "" : `checkout.rating LIKE '%${rating}%' AND`}  
-        checkout.statusCart LIKE '%${statusCart}%' LIMIT ${limit} OFFSET ${offset};`,
+        checkout.statusCart LIKE '${statusCart}' LIMIT ${limit} OFFSET ${offset};`,
         (error, result) => {
           if (!error) {
             resolve(result);
